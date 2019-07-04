@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/spinner_dialog"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content">
+    <TextView
+            android:id="@+id/dialog_label"
+            android:layout_height="50dp"
+            android:layout_width="250dp"/>
+
+    <Spinner
+            android:id="@+id/dialog_spinner"
+            android:layout_height="50dp"
+            android:layout_width="250dp"/>
+
+    <ImageView
+            android:id="@+id/dialog_add_location"
+            android:src="@drawable/ic_add_home_adress"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="OK"
+            android:clickable="true"
+            android:layout_toEndOf="@+id/dialog_spinner"
+            android:layout_toRightOf="@+id/dialog_spinner"
+            android:layout_marginLeft="-3dp"
+            android:layout_marginStart="-3dp"/>
+
+</RelativeLayout>

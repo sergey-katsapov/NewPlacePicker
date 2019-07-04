@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">DragAndDrop</string>
+    <string name="check_connection">Проверьте интернет соединение!</string>
+    <string name="build_route">Построить маршрут</string>
+    <string name="my_location">Мое местоположение:</string>
+
+    <string name="google_api_key">AIzaSyBceSrUgspWgea6WVIVSxn4GJFLCYoxSc8</string>
+
+    <array name="main_items">
+        <item>List - Basic Drag and Swipe</item>
+    </array>
+
+    <array name="dummy_items">
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+        <item>Four</item>
+        <item>Five</item>
+        <item>Six</item>
+        <item>Seven</item>
+        <item>Eight</item>
+        <item>Nine</item>
+        <item>Ten</item>
+    </array>
+</resources>
