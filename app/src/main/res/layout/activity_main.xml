@@ -7,7 +7,7 @@
               android:orientation="vertical"
               tools:context=".MainActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                 android:paddingRight="0dp"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"/>
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
             android:layout_width="wrap_content"
@@ -185,19 +185,7 @@
                     android:layout_alignParentLeft="true" android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true" android:layout_marginRight="0dp"
                     android:layout_marginEnd="0dp"/>
-            <Button
-                    android:id="@+id/btn_route2"
-                    android:text="test"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:clickable="true"
-                    android:onClick="onClick"
-                    android:layout_marginLeft="-139dp" android:layout_alignRight="@+id/btn_route"
-                    android:layout_marginRight="39dp" android:layout_marginEnd="39dp"
-                    android:layout_alignEnd="@+id/btn_route" android:layout_alignTop="@+id/btn_route"
-                    android:layout_marginTop="0dp" android:layout_marginBottom="0dp"
-                    android:layout_alignBottom="@+id/btn_route" android:layout_toEndOf="@+id/btn_route"
-                    android:layout_toRightOf="@+id/btn_route" android:layout_marginStart="-139dp"/>
+
         </RelativeLayout>
     </LinearLayout>
 

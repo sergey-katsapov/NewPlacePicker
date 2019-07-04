@@ -13,15 +13,15 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.LocationSource
@@ -34,7 +34,8 @@ import com.sucho.placepicker.PlacePicker
 import katsapov.e.helper.LocationService
 import pub.devrel.easypermissions.EasyPermissions
 
-class MainActivityK : AppCompatActivity(), View.OnClickListener, EasyPermissions.PermissionCallbacks, LocationListener, OnMapReadyCallback {
+class MainActivityK : AppCompatActivity(), View.OnClickListener, EasyPermissions.PermissionCallbacks, LocationListener,
+    OnMapReadyCallback {
 
     private val PLACE_PICKER_REQUEST = 1
     private var tvLatitude: TextView? = null
@@ -68,7 +69,6 @@ class MainActivityK : AppCompatActivity(), View.OnClickListener, EasyPermissions
         tvLatitude = findViewById(R.id.tv_latitude)
         tvLongitude = findViewById(R.id.tv_longitude)
         tvAdress = findViewById(R.id.tv_adress)
-        btnTest = findViewById(R.id.btn_route2)
 
         if (savedInstanceState == null) {
             val fragment = RecyclerListFragmentK()
@@ -179,7 +179,13 @@ class MainActivityK : AppCompatActivity(), View.OnClickListener, EasyPermissions
             mSpinner.adapter = adapter
 
             mBuilder.setPositiveButton(tvPositiveButton) { dialog, which ->
-                    Toast.makeText(this,"afsafs", Toast.LENGTH_SHORT).show()
+                //TODO add place picker on map
+                // Toast.makeText(this,"afsafs", Toast.LENGTH_SHORT).show()
+                val intent = PlacePicker.IntentBuilder()
+                    .setLatLong(53.867323, 27.508925)
+                    .showLatLong(true)
+                    .build(this)
+                startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST)
             }
 
             mView.findViewById<View>(R.id.dialog_add_location)
@@ -204,65 +210,27 @@ class MainActivityK : AppCompatActivity(), View.OnClickListener, EasyPermissions
                 val lat = lm.getLastKnownLocation(provider).latitude
                 val lng = lm.getLastKnownLocation(provider).longitude
                 mPointMe = LatLng(lat, lng)
-
-                findViewById<Button>(R.id.btn_route2).setOnClickListener {
-                    val intent = PlacePicker.IntentBuilder()
-                        .setLatLong(lat, lng)
-                        .showLatLong(true)
-                        .build(this)
-                    startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST)
-                }
             }
             lm.requestLocationUpdates(provider, 1, 1000f, this)
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
         data: Intent?
     ) {
-        if (requestCode == Constants.PLACE_PICKER_REQUEST) {
-            if (resultCode == Activity.RESULT_OK) {
-                try {
-                    val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
-                    findViewById<TextView>(R.id.tv_latitude).text = addressData.toString()
-                } catch (e: Exception) {
-                    Log.e("MainActivity", e.message)
-                }
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
+        try {
+            val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
+            findViewById<TextView>(R.id.tv_latitude).text = addressData!!.latitude.toString()
+            findViewById<TextView>(R.id.tv_longitude).text = addressData.longitude.toString()
+            val adress = addressData.addressList!![0].thoroughfare.toString() + " , " + addressData.addressList!![0].featureName.toString()
+            findViewById<TextView>(R.id.tv_adress).text = adress
+        } catch (e: Exception) {
+            Log.e("MainActivity", e.message)
         }
     }
-
-    /*@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Place place = PlacePicker.getPlace(data, this);
-                String toastMsg = String.format("Place: %s", place.getName());
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-
-                *//*StringBuilder stBuilder = new StringBuilder();
-                String latitude = String.valueOf(place.getLatLng().latitude);
-                tvLatitude.setText(latitude);
-                String longitude = String.valueOf(place.getLatLng().longitude);
-                tvLongitude.setText(longitude);
-                String address = String.format("%s", place.getAddress());
-                tvAdress.setText(address);
-                stBuilder.append("\n");
-                stBuilder.append("Latitude: ");
-                stBuilder.append(latitude);
-                stBuilder.append("\n");
-                stBuilder.append("Logitude: ");
-                stBuilder.append(longitude);
-                stBuilder.append("\n");
-                stBuilder.append("Address: ");
-                stBuilder.append(address);*//*
-            }
-        }
-    }*/
 
 
     fun openStaticAdressActivity(context: Activity) {

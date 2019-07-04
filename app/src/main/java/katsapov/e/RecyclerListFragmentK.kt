@@ -1,24 +1,21 @@
 package katsapov.e
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import katsapov.e.helper.OnStartDragListenerK
 import katsapov.e.helper.SimpleItemTouchHelperCallbackK
 
-class RecyclerListFragmentK : Fragment(), OnStartDragListenerK {
+class RecyclerListFragmentK : androidx.fragment.app.Fragment(), OnStartDragListenerK {
 
     private var mItemTouchHelper: ItemTouchHelper? = null
     private val dragStartListener: RecyclerListFragmentK? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return RecyclerView(container!!.context)
+        return androidx.recyclerview.widget.RecyclerView(container!!.context)
     }
 
 
@@ -27,10 +24,10 @@ class RecyclerListFragmentK : Fragment(), OnStartDragListenerK {
 
         val adapter = RecyclerListAdapterK(context!!, this)
 
-        val recyclerView = view as RecyclerView
+        val recyclerView = view as androidx.recyclerview.widget.RecyclerView
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
 
         val callback = SimpleItemTouchHelperCallbackK(adapter)
         mItemTouchHelper = ItemTouchHelper(callback)
@@ -38,5 +35,5 @@ class RecyclerListFragmentK : Fragment(), OnStartDragListenerK {
     }
 
 
-    override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {}
+    override fun onStartDrag(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {}
 }
