@@ -2,9 +2,9 @@ package katsapov.e.helper
 
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper
-import katsapov.e.RecyclerListAdapterK
+import katsapov.e.RecyclerListAdapter
 
-class SimpleItemTouchHelperCallbackK(private val mAdapter: RecyclerListAdapterK?) : ItemTouchHelper.Callback() {
+class SimpleItemTouchHelperCallbackK(private val mAdapter: RecyclerListAdapter?) : ItemTouchHelper.Callback() {
 
     override fun isItemViewSwipeEnabled(): Boolean {
         return true

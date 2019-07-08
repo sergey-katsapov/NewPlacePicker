@@ -11,8 +11,8 @@ import katsapov.e.helper.ItemTouchHelperAdapterK
 import katsapov.e.helper.ItemTouchHelperViewHolderK
 import java.util.*
 
-class RecyclerListAdapterK(private val mContext: Context, private val mDragStartListener: RecyclerListFragmentK) :
-    androidx.recyclerview.widget.RecyclerView.Adapter<RecyclerListAdapterK.ItemViewHolder>(), ItemTouchHelperAdapterK {
+class RecyclerListAdapter(private val mContext: Context, private val mDragStartListener: RecyclerListFragment) :
+    androidx.recyclerview.widget.RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder>(), ItemTouchHelperAdapterK {
 
     private val mItems = ArrayList<String>()
 
@@ -52,12 +52,9 @@ class RecyclerListAdapterK(private val mContext: Context, private val mDragStart
     }
 
 
-    class ItemViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView), ItemTouchHelperViewHolderK {
-        val textView: TextView
-
-        init {
-            textView = itemView.findViewById<View>(R.id.text) as TextView
-        }
+    class ItemViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView),
+        ItemTouchHelperViewHolderK {
+        val textView: TextView = itemView.findViewById<View>(R.id.text) as TextView
 
         override fun onItemSelected() {
             itemView.setBackgroundColor(Color.RED)

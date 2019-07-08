@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/spinner_dialog"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content">
-    <TextView
-            android:id="@+id/dialog_label"
-            android:layout_height="50dp"
-            android:layout_width="250dp"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/spinner_dialog"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
 
     <Spinner
             android:id="@+id/dialog_spinner"
             android:layout_height="50dp"
-            android:layout_width="250dp"/>
+            android:layout_width="0dp"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"/>
 
     <ImageView
             android:id="@+id/dialog_add_location"
-            android:src="@drawable/ic_add_home_adress"
+            android:src="@android:drawable/ic_input_add"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="OK"
-            android:clickable="true"
-            android:layout_toEndOf="@+id/dialog_spinner"
-            android:layout_toRightOf="@+id/dialog_spinner"
-            android:layout_marginLeft="-3dp"
-            android:layout_marginStart="-3dp"/>
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:clickable="true"/>
 
-</RelativeLayout>
+    <Button
+            android:id="@+id/tvOk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Выбрать"
+            android:gravity="center"
+            android:clickable="true"/>
+
+</LinearLayout>

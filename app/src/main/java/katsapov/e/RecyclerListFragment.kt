@@ -8,21 +8,18 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import katsapov.e.helper.OnStartDragListenerK
 import katsapov.e.helper.SimpleItemTouchHelperCallbackK
 
-class RecyclerListFragmentK : androidx.fragment.app.Fragment(), OnStartDragListenerK {
+class RecyclerListFragment : androidx.fragment.app.Fragment(), OnStartDragListenerK {
 
     private var mItemTouchHelper: ItemTouchHelper? = null
-    private val dragStartListener: RecyclerListFragmentK? = null
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return androidx.recyclerview.widget.RecyclerView(container!!.context)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = RecyclerListAdapterK(context!!, this)
+        val adapter = RecyclerListAdapter(context!!, this)
 
         val recyclerView = view as androidx.recyclerview.widget.RecyclerView
         recyclerView.setHasFixedSize(true)
@@ -33,7 +30,6 @@ class RecyclerListFragmentK : androidx.fragment.app.Fragment(), OnStartDragListe
         mItemTouchHelper = ItemTouchHelper(callback)
         mItemTouchHelper!!.attachToRecyclerView(recyclerView)
     }
-
 
     override fun onStartDrag(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {}
 }
