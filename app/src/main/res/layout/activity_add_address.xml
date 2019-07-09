@@ -45,16 +45,16 @@
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/colorPrimary">
 
-            <AutoCompleteTextView
+            <EditText
                     android:layout_alignParentBottom="true"
-                    android:id="@+id/autoCompleteTextView"
+                    android:id="@+id/edAddressStaticName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="HelveticaNeueCyr-Roman"
                     android:hint="Название "
                     android:textSize="16sp"
                     android:singleLine="false">
-            </AutoCompleteTextView>
+            </EditText>
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/colorPrimary">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <TextView
                     android:id="@+id/address"
                     android:layout_alignParentBottom="true"
                     android:layout_width="match_parent"
@@ -74,16 +74,20 @@
                     android:textSize="16sp"
                     android:textColor="@color/colorAccent"
                     android:hint="Адрес"
+                    android:onClick="onClick"
+                    android:clickable="true"
                     android:singleLine="false"/>
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <Button
-            android:id="@+id/btn"
+            android:id="@+id/btnUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Готово"
+            android:text="Сохранить"
+            android:onClick="onClickButton"
+            android:clickable="true"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@color/colorAccent"

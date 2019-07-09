@@ -5,7 +5,6 @@ import android.location.Location
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 

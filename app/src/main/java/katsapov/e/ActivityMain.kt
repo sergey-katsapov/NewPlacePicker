@@ -191,7 +191,7 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
 
     private fun openStaticAdressActivity(context: Activity) {
-        val intent = Intent(context.applicationContext, ActivityStaticAddress::class.java)
+        val intent = Intent(context.applicationContext, ActivityAddresses::class.java)
         intent.putExtra("common", this.toString())
         context.startActivityForResult(intent, 0)
     }
