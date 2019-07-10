@@ -1,4 +1,4 @@
-package katsapov.e
+package katsapov.e.Model
 
 class AddressModel(name: String, type: String, feature: String) {
 

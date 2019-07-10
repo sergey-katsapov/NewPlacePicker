@@ -4,92 +4,51 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize">
-
-        <ImageView
-                android:id="@+id/toolbar_logo"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/app_name"
-                android:src="@mipmap/ic_launcher_round"/>
-
-        <TextView
-                android:id="@+id/tv_title_visit_plan"
-                android:text="@string/app_name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:paddingStart="10dp"
-                android:paddingLeft="10dp"
-                android:paddingEnd="0dp"
-                android:paddingRight="0dp"
-                android:textColor="@android:color/white"
-                android:textSize="14sp"/>
-    </androidx.appcompat.widget.Toolbar>
-
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_weight="1"
             android:padding="16dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tiNameStreet"
+        <EditText
+                android:layout_alignParentBottom="true"
+                android:id="@+id/edAddressStaticName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary">
+                android:fontFamily="HelveticaNeueCyr-Roman"
+                android:hint="Название "
+                android:textSize="16sp"
+                android:singleLine="false">
+        </EditText>
 
-            <EditText
-                    android:layout_alignParentBottom="true"
-                    android:id="@+id/edAddressStaticName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="HelveticaNeueCyr-Roman"
-                    android:hint="Название "
-                    android:textSize="16sp"
-                    android:singleLine="false">
-            </EditText>
-
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_input_address"
+        <TextView
+                android:id="@+id/address"
+                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimary">
-
-            <TextView
-                    android:id="@+id/address"
-                    android:layout_alignParentBottom="true"
+                android:textSize="16sp"
+                android:textColor="@color/colorAccent"
+                android:hint="Адрес"
+                android:onClick="onClick"
+                android:clickable="true"
+                android:singleLine="false"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:gravity="center|bottom"
+                android:orientation="vertical">
+            <Button
+                    android:id="@+id/btnUpdateInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/colorAccent"
-                    android:hint="Адрес"
-                    android:onClick="onClick"
+                    android:text="Сохранить"
                     android:clickable="true"
-                    android:singleLine="false"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"/>
+        </LinearLayout>
     </LinearLayout>
-
-    <Button
-            android:id="@+id/btnUpdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Сохранить"
-            android:onClick="onClickButton"
-            android:clickable="true"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textColor="@color/colorAccent"
-            android:textSize="16sp"/>
 </LinearLayout>

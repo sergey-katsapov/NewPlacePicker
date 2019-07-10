@@ -1,4 +1,4 @@
-package katsapov.e
+package katsapov.e.Controller.Adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import katsapov.e.Model.AddressModel
+import katsapov.e.R
 import java.util.*
 
 

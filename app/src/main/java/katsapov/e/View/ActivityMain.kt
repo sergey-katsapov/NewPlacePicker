@@ -1,4 +1,4 @@
-package katsapov.e
+package katsapov.e.View
 
 import android.Manifest
 import android.app.Activity
@@ -13,12 +13,12 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.sucho.placepicker.AddressData
 import com.sucho.placepicker.Constants
 import com.sucho.placepicker.PlacePicker
-import katsapov.e.helper.LocationService
+import katsapov.e.Controller.Service.LocationService
+import katsapov.e.R
 import pub.devrel.easypermissions.EasyPermissions
 
 
@@ -42,9 +42,7 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById<View>(R.id.toolbar_top) as Toolbar)
         tvLatitude = findViewById(R.id.tv_latitude)
         tvLongitude = findViewById(R.id.tv_longitude)
         tvAdress = findViewById(R.id.tv_adress)
@@ -121,7 +119,10 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || EasyPermissions.hasPermissions(this, *PERMISSIONS)) {
             startLocationService()
         } else {
-            requestPermissions(PERMISSIONS, PERMISSIONS_REQUEST_CODE)
+            requestPermissions(
+                PERMISSIONS,
+                PERMISSIONS_REQUEST_CODE
+            )
         }
     }
 

@@ -1,18 +1,22 @@
-package katsapov.e
+package katsapov.e.View
 
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.AdapterView
 import android.widget.ListView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
+import com.sucho.placepicker.AddressData
 import com.sucho.placepicker.Constants
 import com.sucho.placepicker.PlacePicker
+import katsapov.e.Controller.Adapter.AddressAdapter
+import katsapov.e.Model.AddressModel
+import katsapov.e.R
 
 
 class ActivityAddresses : AppCompatActivity() {
@@ -22,7 +26,6 @@ class ActivityAddresses : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addresses)
 
-        setSupportActionBar(findViewById<View>(R.id.toolbar_top) as? Toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_24dp)
@@ -42,7 +45,7 @@ class ActivityAddresses : AppCompatActivity() {
         listView.adapter = adapter
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             val intent = Intent(this, ActivityAddAddress::class.java)
-            intent.putExtra("addressStaticName", dataModels[position].name.toUpperCase())
+            intent.putExtra("tag", dataModels[position].name.toUpperCase())
             intent.putExtra("addressName", dataModels[position].type)
             startActivity(intent)
         }
@@ -88,5 +91,17 @@ class ActivityAddresses : AppCompatActivity() {
             }
         }
         return true
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        try {
+            val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
+            val adress =
+                addressData!!.addressList!![0].thoroughfare.toString() + " , " + addressData.addressList!![0].featureName.toString()
+            findViewById<TextView>(R.id.address).text = adress
+        } catch (e: Exception) {
+            Log.e("MainActivity", "sdasdasdasd")
+        }
     }
 }

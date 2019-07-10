@@ -1,5 +1,5 @@
-package katsapov.e.helper
+package katsapov.e.Controller
 
-interface OnStartDragListenerK {
+interface OnStartDragListener {
     fun onStartDrag(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder)
 }

@@ -1,10 +1,10 @@
-package katsapov.e.helper
+package katsapov.e.Controller
 
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper
-import katsapov.e.RecyclerListAdapter
+import katsapov.e.Controller.Adapter.RecyclerListAdapter
 
-class SimpleItemTouchHelperCallbackK(private val mAdapter: RecyclerListAdapter?) : ItemTouchHelper.Callback() {
+class SimpleItemTouchHelperCallback(private val mAdapter: RecyclerListAdapter?) : ItemTouchHelper.Callback() {
 
     override fun isItemViewSwipeEnabled(): Boolean {
         return true
@@ -63,8 +63,8 @@ class SimpleItemTouchHelperCallbackK(private val mAdapter: RecyclerListAdapter?)
 
     override fun onSelectedChanged(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder?, actionState: Int) {
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-            if (viewHolder is ItemTouchHelperViewHolderK) {
-                val itemViewHolder = viewHolder as ItemTouchHelperViewHolderK?
+            if (viewHolder is ItemTouchHelperViewHolder) {
+                val itemViewHolder = viewHolder as ItemTouchHelperViewHolder?
                 itemViewHolder!!.onItemSelected()
             }
         }
@@ -75,8 +75,8 @@ class SimpleItemTouchHelperCallbackK(private val mAdapter: RecyclerListAdapter?)
         super.clearView(recyclerView, viewHolder)
         viewHolder.itemView.alpha = ALPHA_FULL
 
-        if (viewHolder is ItemTouchHelperViewHolderK) {
-            val itemViewHolder = viewHolder as ItemTouchHelperViewHolderK
+        if (viewHolder is ItemTouchHelperViewHolder) {
+            val itemViewHolder = viewHolder as ItemTouchHelperViewHolder
             itemViewHolder.onItemClear()
         }
     }

@@ -1,6 +1,6 @@
-package katsapov.e.helper
+package katsapov.e.Controller.Adapter
 
-interface ItemTouchHelperAdapterK {
+interface ItemTouchHelperAdapter {
     fun onItemMove(fromPosition: Int, toPosition: Int): Boolean
     fun onItemDismiss(position: Int)
 }
