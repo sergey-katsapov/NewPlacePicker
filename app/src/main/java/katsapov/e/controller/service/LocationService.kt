@@ -1,4 +1,4 @@
-package katsapov.e.Controller.Service
+package katsapov.e.controller.service
 
 import android.annotation.SuppressLint
 import android.app.Service

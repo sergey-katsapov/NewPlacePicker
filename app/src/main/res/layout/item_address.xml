@@ -17,7 +17,7 @@
         android:id="@+id/tv_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_name"
+        android:layout_below="@id/tv_name"
         android:layout_marginTop="5dp"
         android:text="Description"
         android:textColor="@android:color/black" />

@@ -1,4 +1,4 @@
-package katsapov.e.Controller.Adapter
+package katsapov.e.controller.adapter
 
 import android.content.Context
 import android.graphics.Color
@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import katsapov.e.Controller.ItemTouchHelperViewHolder
 import katsapov.e.R
-import katsapov.e.View.RecyclerListFragment
+import katsapov.e.controller.ItemTouchHelperViewHolder
+import katsapov.e.view.RecyclerListFragment
 import java.util.*
 
 class RecyclerListAdapter(private val mContext: Context, private val mDragStartListener: RecyclerListFragment) :

@@ -1,4 +1,4 @@
-package katsapov.e.View
+package katsapov.e.view
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -14,9 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.sucho.placepicker.AddressData
 import com.sucho.placepicker.Constants
 import com.sucho.placepicker.PlacePicker
-import katsapov.e.Controller.Adapter.AddressAdapter
-import katsapov.e.Model.AddressModel
 import katsapov.e.R
+import katsapov.e.controller.adapter.AddressAdapter
+import katsapov.e.model.AddressModel
 
 
 class ActivityAddresses : AppCompatActivity() {

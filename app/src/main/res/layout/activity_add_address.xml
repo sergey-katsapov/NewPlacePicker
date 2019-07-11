@@ -2,53 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              android:padding="16dp">
 
     <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:padding="16dp">
+            android:orientation="vertical">
 
         <EditText
-                android:layout_alignParentBottom="true"
                 android:id="@+id/edAddressStaticName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="HelveticaNeueCyr-Roman"
                 android:hint="Название "
                 android:textSize="16sp"
-                android:singleLine="false">
-        </EditText>
+                android:singleLine="false"/>
 
         <TextView
                 android:id="@+id/address"
-                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textColor="@color/colorAccent"
                 android:hint="Адрес"
                 android:onClick="onClick"
-                android:clickable="true"
                 android:singleLine="false"/>
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dip"
-                android:layout_weight="1"
-                android:gravity="center|bottom"
-                android:orientation="vertical">
-            <Button
-                    android:id="@+id/btnUpdateInfo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Сохранить"
-                    android:clickable="true"
-                    android:textAlignment="center"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="16sp"/>
-        </LinearLayout>
     </LinearLayout>
+
+    <Button
+            android:id="@+id/btnUpdateInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сохранить"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"/>
 </LinearLayout>

@@ -16,7 +16,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-        <activity android:name=".View.ActivityMain">
+        <activity android:name=".view.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -24,8 +24,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".View.ActivityAddresses"/>
-        <activity android:name=".View.ActivityAddAddress"/>
+        <activity android:name=".view.ActivityAddresses"/>
+        <activity android:name=".view.ActivityAddAddress"/>
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"

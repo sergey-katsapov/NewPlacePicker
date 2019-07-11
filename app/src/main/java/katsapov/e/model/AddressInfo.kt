@@ -1,4 +1,4 @@
-package katsapov.e.Model
+package katsapov.e.model
 
 class AddressInfo {
 

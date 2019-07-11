@@ -1,22 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/main_container"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context=".View.ActivityMain">
+              tools:context=".view.ActivityMain">
 
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
-        <ListView
-                android:id="@+id/lv_adresses"
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:clickable="true"
-                android:layout_height="wrap_content" android:focusable="true">
-        </ListView>
-    </LinearLayout>
+                android:layout_height="?android:attr/actionBarSize">
+
+            <ImageView
+                    android:id="@+id/toolbar_logo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/app_name"
+                    android:src="@mipmap/ic_launcher_round"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingEnd="0dp"
+                    android:paddingRight="0dp"
+                    android:text="Мои адреса"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"/>
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ListView
+            android:id="@+id/lv_adresses"
+            android:layout_width="match_parent"
+            android:clickable="true"
+            android:layout_height="wrap_content"
+            android:focusable="true"/>
 </LinearLayout>

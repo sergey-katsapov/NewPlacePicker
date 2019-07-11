@@ -11,6 +11,7 @@
     </array>
 
     <array name="dummy_items">
+        <item>Текущее местоположение</item>
         <item>One</item>
         <item>Two</item>
         <item>Three</item>

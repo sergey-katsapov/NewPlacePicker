@@ -1,13 +1,13 @@
-package katsapov.e.View
+package katsapov.e.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
-import katsapov.e.Controller.Adapter.RecyclerListAdapter
-import katsapov.e.Controller.OnStartDragListener
-import katsapov.e.Controller.SimpleItemTouchHelperCallback
+import katsapov.e.controller.OnStartDragListener
+import katsapov.e.controller.SimpleItemTouchHelperCallback
+import katsapov.e.controller.adapter.RecyclerListAdapter
 
 class RecyclerListFragment : androidx.fragment.app.Fragment(), OnStartDragListener {
 

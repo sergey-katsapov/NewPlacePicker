@@ -1,19 +1,13 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-            android:id="@+id/action_add_adress"
-            android:icon="@drawable/ic_house_select"
-            android:title="Добавить"
-            app:showAsAction="always">
-    </item>
+    <item android:id="@+id/action_add_adress"
+          android:title="Мои адреса"
+          app:showAsAction="ifRoom"/>
 
-    <item
-            android:id="@+id/action_add_customer"
-            android:icon="@drawable/ic_action_add"
-            android:title="Добавить"
-            app:showAsAction="always">
-    </item>
-
+    <item android:id="@+id/action_add_customer"
+          android:icon="@drawable/ic_action_add"
+          android:title="Добавить"
+          app:showAsAction="ifRoom"/>
 
 </menu>

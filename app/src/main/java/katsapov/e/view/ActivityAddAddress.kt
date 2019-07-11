@@ -1,4 +1,4 @@
-package katsapov.e.View
+package katsapov.e.view
 
 import android.content.Context
 import android.content.Intent
@@ -16,8 +16,8 @@ import com.google.gson.Gson
 import com.sucho.placepicker.AddressData
 import com.sucho.placepicker.Constants
 import com.sucho.placepicker.PlacePicker
-import katsapov.e.Model.AddressInfo
 import katsapov.e.R
+import katsapov.e.model.AddressInfo
 import java.util.*
 
 
@@ -148,11 +148,7 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
      }*/
 
 
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         try {
             val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
             val adress =

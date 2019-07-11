@@ -1,4 +1,4 @@
-package katsapov.e.Controller
+package katsapov.e.controller
 
 interface ItemTouchHelperViewHolder {
     fun onItemSelected()

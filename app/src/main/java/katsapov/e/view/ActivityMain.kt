@@ -1,4 +1,4 @@
-package katsapov.e.View
+package katsapov.e.view
 
 import android.Manifest
 import android.app.Activity
@@ -17,8 +17,8 @@ import androidx.core.content.ContextCompat
 import com.sucho.placepicker.AddressData
 import com.sucho.placepicker.Constants
 import com.sucho.placepicker.PlacePicker
-import katsapov.e.Controller.Service.LocationService
 import katsapov.e.R
+import katsapov.e.controller.service.LocationService
 import pub.devrel.easypermissions.EasyPermissions
 
 
@@ -54,31 +54,42 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
                 .commit()
         }
 
-        val button = findViewById<ImageButton>(R.id.btn_location)
-        button.setOnClickListener {
-
-            val tvPositiveButton = "Выбрать на карте"
-
-            val mBuilder = AlertDialog.Builder(this@ActivityMain)
+        val btnLocation = findViewById<ImageButton>(R.id.btn_location)
+        btnLocation.setOnClickListener {
             val mView = layoutInflater.inflate(R.layout.spinner_dialog, null)
-            val mSpinner = mView.findViewById<View>(R.id.dialog_spinner) as Spinner
-
+            val mBuilder = AlertDialog.Builder(this@ActivityMain)
             mBuilder.setTitle("Выбор места:")
-            findViewById<TextView>(R.id.tv_latitude).hint = " "
-            findViewById<TextView>(R.id.tv_longitude).hint = " "
+            mBuilder.setNegativeButton("Выбрать на карте") { dialog, which ->
+                val intent = PlacePicker.IntentBuilder()
+                    .setLatLong(53.867323, 27.508925)
+                    .showLatLong(true)
+                    .build(this)
+                startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST)
+            }
+
+            mBuilder.setPositiveButton("Выбрать") { dialog, which ->
+                val intent = PlacePicker.IntentBuilder()
+                    .setLatLong(53.867323, 27.508925)
+                    .showLatLong(true)
+                    .build(this)
+                startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST)
+            }
+            mBuilder.setCancelable(true)
+            mBuilder.setView(mView)
+            val dialog = mBuilder.create()
+            dialog.show()
+
             val adapter = ArrayAdapter(
                 this@ActivityMain,
                 android.R.layout.simple_spinner_item,
                 resources.getStringArray(R.array.dummy_items)
             )
-
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            val mSpinner = mView.findViewById<View>(R.id.dialog_spinner) as Spinner
             mSpinner.adapter = adapter
             mSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    itemSelected: View, selectedItemPosition: Int, selectedId: Long
-                ) {
+                override fun onItemSelected(parent: AdapterView<*>, itemSelected: View, selectedItemPosition: Int, selectedId: Long) {
                     val choose = resources.getStringArray(R.array.dummy_items)
                     findViewById<TextView>(R.id.tv_latitude).hint = " "
                     findViewById<TextView>(R.id.tv_longitude).hint = " "
@@ -88,29 +99,12 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
 
-            mBuilder.setPositiveButton(tvPositiveButton) { dialog, which ->
-                val intent = PlacePicker.IntentBuilder()
-                    .setLatLong(53.867323, 27.508925)
-                    .showLatLong(true)
-                    .build(this)
-                startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST)
-            }
-
             mView.findViewById<View>(R.id.dialog_add_location)
-                .setOnClickListener { openStaticAdressActivity(this@ActivityMain) }
-
-            mView.findViewById<View>(R.id.tvOk)
-                .setOnClickListener {
-                    val dialog = mBuilder.create()
-                    // dialog.show()
-                    finish()
-                }
-
-            mBuilder.setCancelable(true)
-            mBuilder.setView(mView)
-            val dialog = mBuilder.create()
-            dialog.show()
+                .setOnClickListener { openAddressesActivity(this@ActivityMain) }
         }
+
+        //setSupportActionBar(toolbar) TODO ДОБАВИТЬ
+
     }
 
     //work with Permissions
@@ -156,8 +150,7 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.activity_visitplan, menu)
+        menuInflater.inflate(R.menu.activity_visitplan, menu)
         mAddAddress = menu.findItem(R.id.action_add_adress)
         mAddCustomer = menu.findItem(R.id.action_add_customer)
         return true
@@ -165,7 +158,7 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_add_adress -> openStaticAdressActivity(this)
+            R.id.action_add_adress -> openAddressesActivity(this)
             R.id.action_add_customer -> Toast.makeText(this, "2", Toast.LENGTH_SHORT).show()
             else -> {
             }
@@ -173,25 +166,21 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         return true
     }
 
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int,data: Intent?) {
         try {
             val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
-            val adress =
+            val address =
                 addressData!!.addressList!![0].thoroughfare.toString() + " , " + addressData.addressList!![0].featureName.toString()
             findViewById<TextView>(R.id.tv_latitude).text = addressData.latitude.toString()
             findViewById<TextView>(R.id.tv_longitude).text = addressData.longitude.toString()
-            findViewById<TextView>(R.id.tv_adress).text = adress
+            findViewById<TextView>(R.id.tv_adress).text = address
         } catch (e: Exception) {
             Log.e("MainActivity", "sdasdasdasd")
         }
     }
 
 
-    private fun openStaticAdressActivity(context: Activity) {
+    private fun openAddressesActivity(context: Activity) {
         val intent = Intent(context.applicationContext, ActivityAddresses::class.java)
         intent.putExtra("common", this.toString())
         context.startActivityForResult(intent, 0)

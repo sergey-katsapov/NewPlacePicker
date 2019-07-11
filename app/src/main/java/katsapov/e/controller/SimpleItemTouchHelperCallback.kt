@@ -1,8 +1,8 @@
-package katsapov.e.Controller
+package katsapov.e.controller
 
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper
-import katsapov.e.Controller.Adapter.RecyclerListAdapter
+import katsapov.e.controller.adapter.RecyclerListAdapter
 
 class SimpleItemTouchHelperCallback(private val mAdapter: RecyclerListAdapter?) : ItemTouchHelper.Callback() {
 
