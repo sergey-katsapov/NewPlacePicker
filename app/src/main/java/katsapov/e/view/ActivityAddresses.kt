@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.AdapterView
-import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +16,8 @@ import com.sucho.placepicker.PlacePicker
 import katsapov.e.R
 import katsapov.e.controller.adapter.AddressAdapter
 import katsapov.e.model.AddressModel
+import kotlinx.android.synthetic.main.activity_main.*
+import android.widget.ListView as ListView1
 
 
 class ActivityAddresses : AppCompatActivity() {
@@ -26,11 +27,16 @@ class ActivityAddresses : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_addresses)
 
+
+        setSupportActionBar(toolbar)
+
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_24dp)
 
-        val listView = findViewById<ListView>(R.id.lv_adresses)
+
+
+        val listView = findViewById<android.widget.ListView>(R.id.lv_adresses)
         val dataModels = java.util.ArrayList<AddressModel>()
 
         dataModels.add(AddressModel("Дом", "Алибегова, 27", "1"))

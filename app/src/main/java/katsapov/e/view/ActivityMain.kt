@@ -19,6 +19,7 @@ import com.sucho.placepicker.Constants
 import com.sucho.placepicker.PlacePicker
 import katsapov.e.R
 import katsapov.e.controller.service.LocationService
+import kotlinx.android.synthetic.main.activity_main.*
 import pub.devrel.easypermissions.EasyPermissions
 
 
@@ -103,7 +104,7 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
                 .setOnClickListener { openAddressesActivity(this@ActivityMain) }
         }
 
-        //setSupportActionBar(toolbar) TODO ДОБАВИТЬ
+        setSupportActionBar(toolbar)
 
     }
 

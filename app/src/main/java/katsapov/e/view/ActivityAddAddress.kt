@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.sucho.placepicker.AddressData
@@ -18,6 +17,7 @@ import com.sucho.placepicker.Constants
 import com.sucho.placepicker.PlacePicker
 import katsapov.e.R
 import katsapov.e.model.AddressInfo
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 
@@ -38,6 +38,9 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_address)
+
+        setSupportActionBar(toolbar)
+
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_24dp)
@@ -111,8 +114,11 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
                     applicationContext.getSharedPreferences(SHARED_PREFERENCES_FILE_ADDRESS_LIST, MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
                 editor.putString(SHARED_PREFERENCES_KEY_USER_INFO_LIST, userInfoListJsonString)
-                editor.commit()
-                Toast.makeText(applicationContext, "Сохранено!", Toast.LENGTH_SHORT).show()
+                editor.apply()
+                val intent = Intent(this@ActivityAddAddress, ActivityAddresses::class.java)
+                startActivity(intent)
+
+               // Toast.makeText(applicationContext, "Сохранено!", Toast.LENGTH_SHORT).show()
             }
         }
 

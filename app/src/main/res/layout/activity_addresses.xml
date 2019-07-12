@@ -2,18 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               tools:context=".view.ActivityMain">
 
     <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize">
+                android:layout_height="?android:attr/actionBarSize"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
 
             <ImageView
                     android:id="@+id/toolbar_logo"
@@ -21,23 +24,23 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/app_name"
-                    android:src="@mipmap/ic_launcher_round"/>
+                    android:src="@mipmap/ic_launcher_round" />
 
             <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:paddingStart="10dp"
                     android:paddingLeft="10dp"
                     android:paddingEnd="0dp"
                     android:paddingRight="0dp"
-                    android:text="Мои адреса"
+                    android:text="@string/app_name"
                     android:textColor="@android:color/white"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
+
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
-
     <ListView
             android:id="@+id/lv_adresses"
             android:layout_width="match_parent"
