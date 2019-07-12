@@ -1,14 +1,16 @@
 package katsapov.e.model
 
-class AddressInfo {
+class AddressInfo(tag: String, addressName: String, latitude: String,longitude: String) {
 
-    var id: Int = 0
     var tag: String? = null
     var addressName: String? = null
+    var latitude: String? = null
+    var longitude: String? = null
 
     init {
-        this.id = 0
-        this.tag = null
-        this.addressName = null
+        this.tag = tag
+        this.addressName = addressName
+        this.latitude = latitude
+        this.longitude = longitude
     }
 }

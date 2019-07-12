@@ -14,14 +14,20 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.gson.Gson
 import com.sucho.placepicker.AddressData
 import com.sucho.placepicker.Constants
 import com.sucho.placepicker.PlacePicker
 import katsapov.e.R
+import katsapov.e.controller.adapter.AddressAdapter
 import katsapov.e.controller.service.LocationService
+import katsapov.e.model.AddressInfo
 import kotlinx.android.synthetic.main.activity_main.*
 import pub.devrel.easypermissions.EasyPermissions
 
+
+private const val SHARED_PREFERENCES_FILE_USER_INFO_LIST = "userInfoList"
+private const val SHARED_PREFERENCES_KEY_USER_INFO_LIST = "user_info_list"
 
 class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
@@ -30,6 +36,7 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     private var tvAdress: TextView? = null
     private var mAddAddress: MenuItem? = null
     private var mAddCustomer: MenuItem? = null
+    private var dataInfoAddress: ArrayList<AddressInfo> = ArrayList()
 
     companion object {
         private const val PERMISSIONS_REQUEST_CODE = 20001
@@ -80,15 +87,19 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
             val dialog = mBuilder.create()
             dialog.show()
 
-            val adapter = ArrayAdapter(
-                this@ActivityMain,
-                android.R.layout.simple_spinner_item,
-                resources.getStringArray(R.array.dummy_items)
-            )
+            val adapter = ArrayAdapter(this@ActivityMain, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.dummy_items))
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             val mSpinner = mView.findViewById<View>(R.id.dialog_spinner) as Spinner
-            mSpinner.adapter = adapter
+            val listView = findViewById<android.widget.ListView>(R.id.lv_adresses)
+            val sharedPreferences = applicationContext.getSharedPreferences(SHARED_PREFERENCES_FILE_USER_INFO_LIST, MODE_PRIVATE)
+            val userInfoListJsonString = sharedPreferences.getString(SHARED_PREFERENCES_KEY_USER_INFO_LIST, "")
+            val gson = Gson()
+            val addressInfoArray = gson.fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java)
+            addressInfoArray?.forEach { addressInfo -> dataInfoAddress.add(addressInfo) }
+
+            mSpinner.adapter =  AddressAdapter(dataInfoAddress, applicationContext)
+
             mSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, itemSelected: View, selectedItemPosition: Int, selectedId: Long) {
                     val choose = resources.getStringArray(R.array.dummy_items)

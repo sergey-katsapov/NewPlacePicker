@@ -8,24 +8,21 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import katsapov.e.R
-import katsapov.e.model.AddressModel
+import katsapov.e.model.AddressInfo
 import kotlinx.android.synthetic.main.item_address.view.*
 import java.util.*
 
 
-class AddressAdapter(dataSet: ArrayList<AddressModel>, private var mContext: Context) :
-    ArrayAdapter<AddressModel>(mContext,
-        R.layout.item_address,
-        R.id.tv_name,
-        dataSet), View.OnClickListener {
+class AddressAdapter(dataSet: ArrayList<AddressInfo>, private var mContext: Context) :
+    ArrayAdapter<AddressInfo>(mContext, R.layout.item_address, R.id.tv_name, dataSet), View.OnClickListener {
 
 
     private val lastPosition = -1
 
 
     private class ViewHolder(view: View) {
-        internal var txtName: TextView? = view.tv_name
-        internal var txtType: TextView? = view.tv_description
+        internal var txtTag: TextView? = view.tv_name
+        internal var txtAddressName: TextView? = view.tv_description
         internal var info: ImageView? = view.item_info
     }
 
@@ -33,7 +30,7 @@ class AddressAdapter(dataSet: ArrayList<AddressModel>, private var mContext: Con
     override fun onClick(v: View) {
         val position = v.tag as Int
         val `object` = getItem(position)
-        val dataModel = `object` as AddressModel
+        val dataModel = `object` as AddressInfo
 
         when (v.id) {
 
@@ -51,11 +48,10 @@ class AddressAdapter(dataSet: ArrayList<AddressModel>, private var mContext: Con
         }
 
         val dataModel = getItem(position)
-        holder.txtName?.text = dataModel?.name
-        holder.txtType?.text = dataModel?.type
+        holder.txtTag?.text = dataModel?.tag
+        holder.txtAddressName?.text = dataModel?.addressName
         holder.info?.setOnClickListener(this)
         holder.info?.tag = position
-        // Return the completed view to render on screen
         return view
     }
 

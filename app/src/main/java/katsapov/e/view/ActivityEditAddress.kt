@@ -17,23 +17,25 @@ import com.sucho.placepicker.Constants
 import com.sucho.placepicker.PlacePicker
 import katsapov.e.R
 import katsapov.e.model.AddressInfo
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import kotlinx.android.synthetic.main.activity_add_address.*
+import kotlinx.android.synthetic.main.activity_main.toolbar
 
+private val PREFERENCES_NAME = "DataStorage"
+private val ADDRESS_STATIC_NAME = "AdressStaticName"
+private val ADDRESS_NAME = "AdressName"
+private val SHARED_PREFERENCES_FILE_ADDRESS_LIST = "userInfoList"
+private val SHARED_PREFERENCES_KEY_USER_INFO_LIST = "user_info_list"
 
 class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
-
-    private val PREFERENCES_NAME = "DataStorage"
-    private val ADDRESS_STATIC_NAME = "AdressStaticName"
-    private val ADDRESS_NAME = "AdressName"
-    private val SHARED_PREFERENCES_FILE_ADDRESS_LIST = "userInfoList"
-    private val SHARED_PREFERENCES_KEY_USER_INFO_LIST = "User_Info_List"
 
     var mSharedPreferences: SharedPreferences? = null
 
     var tvAddressName: TextView? = null
+    var tvLatitude: TextView? = null
+    var tvLongitude: TextView? = null
     var btnUpdate: Button? = null
     var edStaticAddressName: TextView? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +49,8 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
 
         edStaticAddressName = findViewById<TextView>(R.id.edAddressStaticName)
         tvAddressName = findViewById<TextView>(R.id.address)
+        tvLatitude = findViewById<TextView>(R.id.tv_latitudeAddress)
+        tvLongitude = findViewById<TextView>(R.id.tv_longitudeAddress)
         btnUpdate = findViewById<Button>(R.id.btnUpdateInfo)
         btnUpdate!!.setOnClickListener(this)
         tvAddressName!!.setOnClickListener(this)
@@ -55,24 +59,17 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
 
         val addressStaticName = intent.getStringExtra("tag")
         val addressName = intent.getStringExtra("addressName")
-        edStaticAddressName!!.text = "$addressStaticName"
-        tvAddressName!!.text = "$addressName"
+        val latitude = intent.getStringExtra("latitude")
+        val longitude = intent.getStringExtra("longitude")
+        edStaticAddressName!!.text = addressStaticName
+        tvAddressName!!.text = addressName
+        tvLatitude!!.text = latitude
+        tvLongitude!!.text = longitude
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         return true
-    }
-
-
-    fun setFieldsFromSaveData() {
-        val adressStaticName = mSharedPreferences!!.getString(ADDRESS_STATIC_NAME, "")
-        val adressName = mSharedPreferences!!.getString(ADDRESS_NAME, "")
-
-        edStaticAddressName = findViewById<TextView>(R.id.tv_name)
-        edStaticAddressName!!.text = adressStaticName
-
-        tvAddressName = findViewById<TextView>(R.id.tv_description)
-        tvAddressName!!.text = adressName
     }
 
 
@@ -100,16 +97,17 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
             R.id.btnUpdateInfo -> {
                 val addressStaticName = edStaticAddressName!!.text.toString()
                 val addressName = tvAddressName!!.text.toString()
-                val newAddress = AddressInfo()
+                val latitude = tvLatitude!!.text.toString()
+                val longitude = tvLongitude!!.text.toString()
+                val newAddress = AddressInfo(addressStaticName, addressName, latitude, longitude)
 
-                val ret = ArrayList<AddressInfo>()
-                newAddress.id = Math.random().toInt()
-                newAddress.tag = addressStaticName
-                newAddress.addressName = addressName
-                ret.add(newAddress)
+
+                val list: ArrayList<AddressInfo> = arrayListOf()
+                list.add(newAddress)
+
 
                 val gson = Gson()
-                val userInfoListJsonString = gson.toJson(ret)
+                val userInfoListJsonString = gson.toJson(list)
                 val sharedPreferences =
                     applicationContext.getSharedPreferences(SHARED_PREFERENCES_FILE_ADDRESS_LIST, MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
@@ -117,41 +115,9 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
                 editor.apply()
                 val intent = Intent(this@ActivityAddAddress, ActivityAddresses::class.java)
                 startActivity(intent)
-
-               // Toast.makeText(applicationContext, "Сохранено!", Toast.LENGTH_SHORT).show()
             }
         }
-
-        /* val addressStaticName = edStaticAddressName!!.text.toString()
-         val addressName = tvAddressName!!.text.toString()
-         val editor: SharedPreferences.Editor = mSharedPreferences!!.edit()
-
-         editor.putString(ADDRESS_STATIC_NAME, addressStaticName)
-         editor.putString(ADDRESS_NAME, addressName)
-         if (editor.commit()) {
-             Toast.makeText(this@ActivityAddAddress, "New adress:\n$tag\n$addressName", Toast.LENGTH_SHORT)
-                 .show()
-         }
-         val intent = Intent(this@ActivityAddAddress, ActivityAddresses::class.java)
-         startActivity(intent)
-     }*/
     }
-
-
-    /* private fun initAddressInfoList(): List<AddressInfo> {
-         val ret = ArrayList<AddressInfo>()
-
-         val addressStaticName = edStaticAddressName!!.text.toString()
-         val addressName = tvAddressName!!.text.toString()
-
-         val newAddress = AddressInfo()
-         newAddress.id = Math.random().toInt()
-         newAddress.tag = addressStaticName
-         newAddress.addressName = addressName
-         ret.add(newAddress)
-
-         return ret
-     }*/
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -159,7 +125,10 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
             val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
             val adress =
                 addressData!!.addressList!![0].thoroughfare.toString() + " , " + addressData.addressList!![0].featureName.toString()
-            findViewById<TextView>(R.id.address).text = adress
+            address.text = adress
+
+            tv_latitudeAddress.text = addressData.addressList!![0].latitude.toString()
+            tv_longitudeAddress.text = addressData.addressList!![0].longitude.toString()
         } catch (e: Exception) {
             Log.e("MainActivity", "sdasdasdasd")
         }

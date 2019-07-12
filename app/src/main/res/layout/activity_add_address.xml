@@ -67,6 +67,29 @@
                 android:paddingLeft="5dp"
                 android:onClick="onClick"
                 android:singleLine="false"/>
+
+        <TextView
+                android:id="@+id/tv_latitudeAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="HelveticaNeueCyr-Roman"
+                android:hint=""
+                android:textSize="16sp"
+                android:paddingLeft="5dp"
+                android:onClick="onClick"
+                android:singleLine="false"/>
+
+
+        <TextView
+                android:id="@+id/tv_longitudeAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="HelveticaNeueCyr-Roman"
+                android:hint=""
+                android:textSize="16sp"
+                android:paddingLeft="5dp"
+                android:onClick="onClick"
+                android:singleLine="false"/>
     </LinearLayout>
 
     <Button
