@@ -1,5 +1,6 @@
 package katsapov.e.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,7 +9,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
@@ -20,21 +20,13 @@ import katsapov.e.model.AddressInfo
 import kotlinx.android.synthetic.main.activity_add_address.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
 
-private val PREFERENCES_NAME = "DataStorage"
-private val ADDRESS_STATIC_NAME = "AdressStaticName"
-private val ADDRESS_NAME = "AdressName"
-private val SHARED_PREFERENCES_FILE_ADDRESS_LIST = "userInfoList"
-private val SHARED_PREFERENCES_KEY_USER_INFO_LIST = "user_info_list"
 
 class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
 
     var mSharedPreferences: SharedPreferences? = null
-
-    var tvAddressName: TextView? = null
-    var tvLatitude: TextView? = null
-    var tvLongitude: TextView? = null
-    var btnUpdate: Button? = null
+    var uuidAddress: String? = null
     var edStaticAddressName: TextView? = null
+    var addressInfoArray: Array<AddressInfo>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,23 +40,27 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_24dp)
 
         edStaticAddressName = findViewById<TextView>(R.id.edAddressStaticName)
-        tvAddressName = findViewById<TextView>(R.id.address)
-        tvLatitude = findViewById<TextView>(R.id.tv_latitudeAddress)
-        tvLongitude = findViewById<TextView>(R.id.tv_longitudeAddress)
-        btnUpdate = findViewById<Button>(R.id.btnUpdateInfo)
-        btnUpdate!!.setOnClickListener(this)
-        tvAddressName!!.setOnClickListener(this)
 
-        mSharedPreferences = getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+        btnUpdateInfo!!.setOnClickListener(this)
+        tv_address!!.setOnClickListener(this)
 
-        val addressStaticName = intent.getStringExtra("tag")
-        val addressName = intent.getStringExtra("addressName")
-        val latitude = intent.getStringExtra("latitude")
-        val longitude = intent.getStringExtra("longitude")
-        edStaticAddressName!!.text = addressStaticName
-        tvAddressName!!.text = addressName
-        tvLatitude!!.text = latitude
-        tvLongitude!!.text = longitude
+        mSharedPreferences = getSharedPreferences(getString(R.string.PREFERENCES_NAME), Context.MODE_PRIVATE)
+        val uuidAdress = intent.getStringExtra("uuid")
+        uuidAddress = uuidAdress
+
+        val sharedPreferences =
+            applicationContext.getSharedPreferences(getString(R.string.SHARED_PREFERENCES_FILE_ADDRESS_LIST), MODE_PRIVATE)
+        val userInfoListJsonString = sharedPreferences.getString(getString(R.string.SHARED_PREFERENCES_KEY_USER_INFO_LIST), "")
+        val gson = Gson()
+        addressInfoArray = gson.fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java)
+        addressInfoArray?.forEach { addressInfo ->
+            if (addressInfo.uuid == uuidAdress) {
+                edStaticAddressName!!.text = addressInfo.tag
+                tv_address.text = addressInfo.addressName
+                tv_latitudeAddress!!.text = addressInfo.latitude
+                tv_longitudeAddress!!.text = addressInfo.longitude
+            }
+        }
     }
 
 
@@ -86,7 +82,7 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
 
-            R.id.address -> {
+            R.id.tv_address -> {
                 val intent = PlacePicker.IntentBuilder()
                     .setLatLong(53.867323, 27.508925)
                     .showLatLong(true)
@@ -95,40 +91,46 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btnUpdateInfo -> {
+                val idAdress = uuidAddress
                 val addressStaticName = edStaticAddressName!!.text.toString()
-                val addressName = tvAddressName!!.text.toString()
-                val latitude = tvLatitude!!.text.toString()
-                val longitude = tvLongitude!!.text.toString()
-                val newAddress = AddressInfo(addressStaticName, addressName, latitude, longitude)
+                val addressName = tv_address.text.toString()
+                val latitude = tv_latitudeAddress!!.text.toString()
+                val longitude = tv_longitudeAddress!!.text.toString()
 
+                addressInfoArray?.forEach { addressInfo ->
+                    if (addressInfo.uuid == idAdress) {
+                        addressInfo.tag = addressStaticName
+                        addressInfo.addressName = addressName
+                        addressInfo.latitude = latitude
+                        addressInfo.longitude = longitude
+                    }
+                }
 
-                val list: ArrayList<AddressInfo> = arrayListOf()
-                list.add(newAddress)
-
-
-                val gson = Gson()
-                val userInfoListJsonString = gson.toJson(list)
-                val sharedPreferences =
-                    applicationContext.getSharedPreferences(SHARED_PREFERENCES_FILE_ADDRESS_LIST, MODE_PRIVATE)
+                val sharedPreferences = applicationContext.getSharedPreferences(getString(R.string.SHARED_PREFERENCES_FILE_ADDRESS_LIST), MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
-                editor.putString(SHARED_PREFERENCES_KEY_USER_INFO_LIST, userInfoListJsonString)
+                val gson = Gson()
+                val userInfoListJsonString = gson.toJson(addressInfoArray)
+                editor.putString(getString(R.string.SHARED_PREFERENCES_KEY_USER_INFO_LIST), userInfoListJsonString)
                 editor.apply()
-                val intent = Intent(this@ActivityAddAddress, ActivityAddresses::class.java)
-                startActivity(intent)
+                finish()
             }
         }
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         try {
             val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
-            val adress =
-                addressData!!.addressList!![0].thoroughfare.toString() + " , " + addressData.addressList!![0].featureName.toString()
-            address.text = adress
-
-            tv_latitudeAddress.text = addressData.addressList!![0].latitude.toString()
-            tv_longitudeAddress.text = addressData.addressList!![0].longitude.toString()
+            addressData?.let {
+                addressData.addressList!![0].let { address ->
+                    val street = address.thoroughfare.toString()
+                    val home = address.featureName.toString()
+                    tv_address.text = "$street , $home"
+                    tv_latitudeAddress.text = address.latitude.toString()
+                    tv_longitudeAddress.text = address.longitude.toString()
+                }
+            }
         } catch (e: Exception) {
             Log.e("MainActivity", "sdasdasdasd")
         }

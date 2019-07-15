@@ -16,11 +16,11 @@ import com.sucho.placepicker.PlacePicker
 import katsapov.e.R
 import katsapov.e.controller.adapter.AddressAdapter
 import katsapov.e.model.AddressInfo
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_addresses.*
+import kotlinx.android.synthetic.main.activity_main.toolbar
+import java.util.*
+import kotlin.collections.ArrayList
 import android.widget.ListView as ListView1
-
-private const val SHARED_PREFERENCES_FILE_USER_INFO_LIST = "userInfoList"
-private const val SHARED_PREFERENCES_KEY_USER_INFO_LIST = "user_info_list"
 
 class ActivityAddresses : AppCompatActivity() {
 
@@ -38,41 +38,55 @@ class ActivityAddresses : AppCompatActivity() {
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_black_24dp)
 
-        val listView = findViewById<android.widget.ListView>(R.id.lv_adresses)
-        val sharedPreferences = applicationContext.getSharedPreferences(SHARED_PREFERENCES_FILE_USER_INFO_LIST, MODE_PRIVATE)
-        val userInfoListJsonString = sharedPreferences.getString(SHARED_PREFERENCES_KEY_USER_INFO_LIST, "")
+
+        val sharedPreferences = applicationContext.getSharedPreferences(
+            getString(R.string.SHARED_PREFERENCES_FILE_ADDRESS_LIST),
+            MODE_PRIVATE
+        )
+        val userInfoListJsonString =
+            sharedPreferences.getString(getString(R.string.SHARED_PREFERENCES_KEY_USER_INFO_LIST), "")
         val gson = Gson()
         val addressInfoArray = gson.fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java)
         addressInfoArray?.forEach { addressInfo -> dataInfoAddress.add(addressInfo) }
-
 
         adapter = AddressAdapter(dataInfoAddress, applicationContext)
         val alert = AlertDialog.Builder(
             this
         )
 
-
-        listView.adapter = adapter
-        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+        lv_adresses.adapter = adapter
+        lv_adresses.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             val intent = Intent(this, ActivityAddAddress::class.java)
-            intent.putExtra("tag", dataInfoAddress[position].tag!!.toUpperCase())
-            intent.putExtra("addressName", dataInfoAddress[position].addressName)
-            intent.putExtra("latitude", dataInfoAddress[position].latitude)
-            intent.putExtra("longitude", dataInfoAddress[position].longitude)
+            intent.putExtra("uuid", dataInfoAddress[position].uuid)
             startActivity(intent)
         }
 
 
-        listView.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, arg3 ->
-            alert.setTitle("Delete")
-            alert.setMessage("Do you want delete this item?")
-            alert.setPositiveButton("YES", DialogInterface.OnClickListener { dialog, which ->
-                adapter?.remove(dataInfoAddress[position])
-                adapter?.notifyDataSetChanged()
-            })
-            alert.setNegativeButton("CANCEL", DialogInterface.OnClickListener { dialog, which ->
-                dialog.dismiss()
-            })
+        lv_adresses.onItemLongClickListener = AdapterView.OnItemLongClickListener { parent, view, position, arg3 ->
+            alert.setTitle(getString(R.string.titleDelete))
+            alert.setMessage(getString(R.string.msgDelete))
+            alert.setPositiveButton(
+                getString(R.string.positive_button),
+                DialogInterface.OnClickListener { dialog, which ->
+                    val a = dataInfoAddress[position]
+                    adapter?.remove(a)
+                    dataInfoAddress.remove(a)
+                    val gson = Gson()
+                    val userInfoListJsonString = gson.toJson(dataInfoAddress)
+                    val sharedPreferences =
+                        applicationContext.getSharedPreferences(
+                            getString(R.string.SHARED_PREFERENCES_FILE_ADDRESS_LIST),
+                            MODE_PRIVATE
+                        )
+                    val editor = sharedPreferences.edit()
+                    editor.putString(getString(R.string.SHARED_PREFERENCES_KEY_USER_INFO_LIST), userInfoListJsonString)
+                    editor.apply()
+                })
+            alert.setNegativeButton(
+                getString(R.string.cancel_button),
+                DialogInterface.OnClickListener { dialog, which ->
+                    dialog.dismiss()
+                })
             alert.show()
             true
         }
@@ -107,6 +121,16 @@ class ActivityAddresses : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        dataInfoAddress.clear()
+        val sharedPreferences = applicationContext.getSharedPreferences(
+            getString(R.string.SHARED_PREFERENCES_FILE_ADDRESS_LIST),
+            MODE_PRIVATE
+        )
+        val userInfoListJsonString =
+            sharedPreferences.getString(getString(R.string.SHARED_PREFERENCES_KEY_USER_INFO_LIST), "")
+        val gson = Gson()
+        val addressInfoArray = gson.fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java)
+        dataInfoAddress.addAll(addressInfoArray)
         adapter?.notifyDataSetChanged()
     }
 
@@ -114,12 +138,36 @@ class ActivityAddresses : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         try {
             val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
-            val adress = addressData!!.addressList!![0].thoroughfare.toString() + " , " + addressData.addressList!![0].featureName.toString()
-            val addressInfo = AddressInfo("", adress, addressData.addressList!![0].latitude.toString(), addressData.addressList!![0].longitude.toString())
+            val adress =
+                addressData!!.addressList!![0].thoroughfare.toString() + " , " + addressData.addressList!![0].featureName.toString()
+            val uuid = generateUuid()
+            val addressInfo = AddressInfo(
+                uuid,
+                "",
+                adress,
+                addressData.addressList!![0].latitude.toString(),
+                addressData.addressList!![0].longitude.toString()
+            )
             dataInfoAddress.add(addressInfo)
+            val gson = Gson()
+            val userInfoListJsonString = gson.toJson(dataInfoAddress)
+            val sharedPreferences =
+                applicationContext.getSharedPreferences(
+                    getString(R.string.SHARED_PREFERENCES_FILE_ADDRESS_LIST),
+                    MODE_PRIVATE
+                )
+            val editor = sharedPreferences.edit()
+            editor.putString(getString(R.string.SHARED_PREFERENCES_KEY_USER_INFO_LIST), userInfoListJsonString)
+            editor.apply()
 
         } catch (e: Exception) {
-            Log.e("MainActivity", "sdasdasdasd")
+            Log.e("MainActivity", "error")
         }
+    }
+
+
+    private fun generateUuid(): String {
+        val timestamp = System.currentTimeMillis()
+        return UUID.randomUUID().toString() + "-" + timestamp
     }
 }

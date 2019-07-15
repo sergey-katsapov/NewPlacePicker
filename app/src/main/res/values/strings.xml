@@ -4,7 +4,16 @@
     <string name="build_route">Построить маршрут</string>
     <string name="my_location">Мое местоположение:</string>
 
+
+    <string name="PREFERENCES_NAME">DataStorage</string>
+    <string name="SHARED_PREFERENCES_FILE_ADDRESS_LIST">userInfoList</string>
+    <string name="SHARED_PREFERENCES_KEY_USER_INFO_LIST">user_info_list</string>
+
     <string name="google_api_key">AIzaSyBceSrUgspWgea6WVIVSxn4GJFLCYoxSc8</string>
+    <string name="msgDelete">Do you want delete this item?</string>
+    <string name="titleDelete">Delete</string>
+    <string name="positive_button">YES</string>
+    <string name="cancel_button">CANCEL</string>
 
     <array name="main_items">
         <item>List - Basic Drag and Swipe</item>
