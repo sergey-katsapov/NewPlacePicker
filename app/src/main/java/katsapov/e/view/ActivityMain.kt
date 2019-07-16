@@ -11,7 +11,10 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
@@ -19,10 +22,10 @@ import com.sucho.placepicker.AddressData
 import com.sucho.placepicker.Constants
 import com.sucho.placepicker.PlacePicker
 import katsapov.e.R
-import katsapov.e.controller.adapter.AddressAdapter
 import katsapov.e.controller.service.LocationService
 import katsapov.e.model.AddressInfo
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.spinner_dialog.view.*
 import pub.devrel.easypermissions.EasyPermissions
 
 
@@ -31,12 +34,15 @@ private const val SHARED_PREFERENCES_KEY_USER_INFO_LIST = "user_info_list"
 
 class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
-    private var tvLatitude: TextView? = null
-    private var tvLongitude: TextView? = null
-    private var tvAdress: TextView? = null
+    private var spinner: Spinner? = null
+
     private var mAddAddress: MenuItem? = null
     private var mAddCustomer: MenuItem? = null
-    private var dataInfoAddress: ArrayList<AddressInfo> = ArrayList()
+
+    private var listTagsAddress: ArrayList<String> = ArrayList()
+    private var listObjAddress: Array<AddressInfo> = emptyArray()
+
+    private var selectedAddress: AddressInfo? = null
 
     companion object {
         private const val PERMISSIONS_REQUEST_CODE = 20001
@@ -51,9 +57,6 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        tvLatitude = findViewById(R.id.tv_latitude)
-        tvLongitude = findViewById(R.id.tv_longitude)
-        tvAdress = findViewById(R.id.tv_adress)
 
         if (savedInstanceState == null) {
             val fragment = RecyclerListFragment()
@@ -62,8 +65,7 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
                 .commit()
         }
 
-        val btnLocation = findViewById<ImageButton>(R.id.btn_location)
-        btnLocation.setOnClickListener {
+        btn_location.setOnClickListener {
             val mView = layoutInflater.inflate(R.layout.spinner_dialog, null)
             val mBuilder = AlertDialog.Builder(this@ActivityMain)
             mBuilder.setTitle("Выбор места:")
@@ -76,47 +78,44 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
             }
 
             mBuilder.setPositiveButton("Выбрать") { dialog, which ->
-                val intent = PlacePicker.IntentBuilder()
-                    .setLatLong(53.867323, 27.508925)
-                    .showLatLong(true)
-                    .build(this)
-                startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST)
+                val id = spinner?.selectedItemId?.toInt() ?: 0
+                selectedAddress = listObjAddress[id]
+                if (selectedAddress != null) {
+                    tv_adress.text = selectedAddress?.addressName
+                    tv_latitude.hint = selectedAddress?.latitude
+                    tv_longitude.hint = selectedAddress?.longitude
+                }
             }
             mBuilder.setCancelable(true)
             mBuilder.setView(mView)
             val dialog = mBuilder.create()
             dialog.show()
 
-            val adapter = ArrayAdapter(this@ActivityMain, android.R.layout.simple_spinner_item, resources.getStringArray(R.array.dummy_items))
+            val adapter = ArrayAdapter(this@ActivityMain, android.R.layout.simple_spinner_item, listTagsAddress)
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-            val mSpinner = mView.findViewById<View>(R.id.dialog_spinner) as Spinner
-            val listView = findViewById<android.widget.ListView>(R.id.lv_adresses)
-            val sharedPreferences = applicationContext.getSharedPreferences(SHARED_PREFERENCES_FILE_USER_INFO_LIST, MODE_PRIVATE)
-            val userInfoListJsonString = sharedPreferences.getString(SHARED_PREFERENCES_KEY_USER_INFO_LIST, "")
-            val gson = Gson()
-            val addressInfoArray = gson.fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java)
-            addressInfoArray?.forEach { addressInfo -> dataInfoAddress.add(addressInfo) }
-
-            mSpinner.adapter =  AddressAdapter(dataInfoAddress, applicationContext)
-
-            mSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, itemSelected: View, selectedItemPosition: Int, selectedId: Long) {
-                    val choose = resources.getStringArray(R.array.dummy_items)
-                    findViewById<TextView>(R.id.tv_latitude).hint = " "
-                    findViewById<TextView>(R.id.tv_longitude).hint = " "
-                    findViewById<TextView>(R.id.tv_adress).text = choose[selectedItemPosition]
-                }
+            spinner = mView.dialog_spinner
+            spinner?.adapter = adapter
+            mView.dialog_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    itemSelected: View,
+                    selectedItemPosition: Int,
+                    selectedId: Long
+                ) {}
 
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
+            for ((index, value) in listObjAddress.withIndex()) {
+                if (value.uuid == selectedAddress?.uuid) {
+                    spinner?.setSelection(index)
+                }
+            }
 
-            mView.findViewById<View>(R.id.dialog_add_location)
-                .setOnClickListener { openAddressesActivity(this@ActivityMain) }
+            mView.dialog_add_location.setOnClickListener { openAddressesActivity(this@ActivityMain) }
         }
 
         setSupportActionBar(toolbar)
-
     }
 
     //work with Permissions
@@ -134,6 +133,17 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     public override fun onResume() {
         super.onResume()
+        listTagsAddress.clear()
+
+        val sharedPreferences =
+            applicationContext.getSharedPreferences(SHARED_PREFERENCES_FILE_USER_INFO_LIST, MODE_PRIVATE)
+        val userInfoListJsonString = sharedPreferences.getString(SHARED_PREFERENCES_KEY_USER_INFO_LIST, "")
+
+        listObjAddress =
+            Gson().fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java) ?: emptyArray()
+        listObjAddress.forEach { addressInfo ->
+            listTagsAddress.add(addressInfo.tag!!)
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -178,14 +188,14 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
         return true
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int,data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         try {
             val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
             val address =
                 addressData!!.addressList!![0].thoroughfare.toString() + " , " + addressData.addressList!![0].featureName.toString()
-            findViewById<TextView>(R.id.tv_latitude).text = addressData.latitude.toString()
-            findViewById<TextView>(R.id.tv_longitude).text = addressData.longitude.toString()
-            findViewById<TextView>(R.id.tv_adress).text = address
+            tv_latitude.text = addressData.latitude.toString()
+            tv_longitude.text = addressData.longitude.toString()
+            tv_adress.text = address
         } catch (e: Exception) {
             Log.e("MainActivity", "sdasdasdasd")
         }
@@ -193,8 +203,6 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
 
     private fun openAddressesActivity(context: Activity) {
-        val intent = Intent(context.applicationContext, ActivityAddresses::class.java)
-        intent.putExtra("common", this.toString())
-        context.startActivityForResult(intent, 0)
+        startActivity(Intent(context.applicationContext, ActivityListAddresses::class.java))
     }
 }

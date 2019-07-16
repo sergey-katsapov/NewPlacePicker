@@ -53,7 +53,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="HelveticaNeueCyr-Roman"
                 android:hint="Название "
-                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textSize="20sp"
                 android:singleLine="false"/>
 
         <TextView
@@ -63,7 +64,7 @@
                 android:textColor="@color/colorAccent"
                 android:fontFamily="HelveticaNeueCyr-Roman"
                 android:hint="Адрес"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:paddingLeft="5dp"
                 android:onClick="onClick"
                 android:singleLine="false"/>
@@ -74,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="HelveticaNeueCyr-Roman"
                 android:hint=""
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:paddingLeft="5dp"
                 android:onClick="onClick"
                 android:singleLine="false"/>
@@ -86,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="HelveticaNeueCyr-Roman"
                 android:hint=""
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:paddingLeft="5dp"
                 android:onClick="onClick"
                 android:singleLine="false"/>

@@ -55,7 +55,7 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
         addressInfoArray = gson.fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java)
         addressInfoArray?.forEach { addressInfo ->
             if (addressInfo.uuid == uuidAdress) {
-                edStaticAddressName!!.text = addressInfo.tag
+                edStaticAddressName!!.text = addressInfo.tag!!.toUpperCase()
                 tv_address.text = addressInfo.addressName
                 tv_latitudeAddress!!.text = addressInfo.latitude
                 tv_longitudeAddress!!.text = addressInfo.longitude

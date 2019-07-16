@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:text="Name"
+        android:textSize="18sp"
+        android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black" />
 
@@ -18,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_name"
-        android:layout_marginTop="5dp"
+        android:textSize="14sp"
         android:text="Description"
         android:textColor="@android:color/black" />
 

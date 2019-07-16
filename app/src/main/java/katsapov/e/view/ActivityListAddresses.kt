@@ -22,7 +22,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import android.widget.ListView as ListView1
 
-class ActivityAddresses : AppCompatActivity() {
+class ActivityListAddresses : AppCompatActivity() {
 
     private var adapter: AddressAdapter? = null
     private var dataInfoAddress: ArrayList<AddressInfo> = ArrayList()
@@ -128,8 +128,7 @@ class ActivityAddresses : AppCompatActivity() {
         )
         val userInfoListJsonString =
             sharedPreferences.getString(getString(R.string.SHARED_PREFERENCES_KEY_USER_INFO_LIST), "")
-        val gson = Gson()
-        val addressInfoArray = gson.fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java)
+        val addressInfoArray = Gson().fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java) ?: emptyArray()
         dataInfoAddress.addAll(addressInfoArray)
         adapter?.notifyDataSetChanged()
     }

@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.ActivityAddresses"/>
+        <activity android:name=".view.ActivityListAddresses"/>
         <activity android:name=".view.ActivityAddAddress"/>
 
         <meta-data

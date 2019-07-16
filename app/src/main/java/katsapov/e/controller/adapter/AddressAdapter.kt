@@ -48,8 +48,8 @@ class AddressAdapter(dataSet: ArrayList<AddressInfo>, private var mContext: Cont
         }
 
         val dataModel = getItem(position)
-        holder.txtTag?.text = dataModel?.tag
-        holder.txtAddressName?.text = dataModel?.addressName
+        holder.txtTag?.text = dataModel?.tag!!.toUpperCase()
+        holder.txtAddressName?.text = dataModel.addressName
         holder.info?.setOnClickListener(this)
         holder.info?.tag = position
         return view
