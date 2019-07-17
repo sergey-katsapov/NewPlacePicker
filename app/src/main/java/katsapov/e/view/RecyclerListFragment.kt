@@ -9,7 +9,7 @@ import katsapov.e.controller.OnStartDragListener
 import katsapov.e.controller.SimpleItemTouchHelperCallback
 import katsapov.e.controller.adapter.RecyclerListAdapter
 
-class RecyclerListFragment : androidx.fragment.app.Fragment(), OnStartDragListener {
+class RecyclerListFragment(private var list: List<String>) : androidx.fragment.app.Fragment(), OnStartDragListener {
 
     private var mItemTouchHelper: ItemTouchHelper? = null
 
@@ -20,7 +20,7 @@ class RecyclerListFragment : androidx.fragment.app.Fragment(), OnStartDragListen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = RecyclerListAdapter(context!!, this)
+        val adapter = RecyclerListAdapter(context!!, this, list)
 
         val recyclerView = view as androidx.recyclerview.widget.RecyclerView
         recyclerView.setHasFixedSize(true)

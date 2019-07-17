@@ -12,14 +12,18 @@ import katsapov.e.controller.ItemTouchHelperViewHolder
 import katsapov.e.view.RecyclerListFragment
 import java.util.*
 
-class RecyclerListAdapter(private val mContext: Context, private val mDragStartListener: RecyclerListFragment) :
+class RecyclerListAdapter(
+    private val mContext: Context,
+    private val mDragStartListener: RecyclerListFragment,
+    private val list: List<String>
+) :
     androidx.recyclerview.widget.RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder>(),
     ItemTouchHelperAdapter {
 
     private val mItems = ArrayList<String>()
 
     init {
-        mItems.addAll(Arrays.asList(*mContext.resources.getStringArray(R.array.dummy_items)))
+        mItems.addAll(list)
     }
 
 
@@ -59,7 +63,7 @@ class RecyclerListAdapter(private val mContext: Context, private val mDragStartL
         val textView: TextView = itemView.findViewById<View>(R.id.text) as TextView
 
         override fun onItemSelected() {
-            itemView.setBackgroundColor(Color.RED)
+            itemView.setBackgroundColor(Color.GRAY)
             itemView.isClickable = true
         }
 

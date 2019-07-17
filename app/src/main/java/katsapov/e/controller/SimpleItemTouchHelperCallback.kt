@@ -10,7 +10,10 @@ class SimpleItemTouchHelperCallback(private val mAdapter: RecyclerListAdapter?) 
         return true
     }
 
-    override fun getMovementFlags(recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder): Int {
+    override fun getMovementFlags(
+        recyclerView: androidx.recyclerview.widget.RecyclerView,
+        viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder
+    ): Int {
         if (recyclerView.layoutManager is androidx.recyclerview.widget.GridLayoutManager) {
             val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
             val swipeFlags = 0
@@ -61,7 +64,10 @@ class SimpleItemTouchHelperCallback(private val mAdapter: RecyclerListAdapter?) 
         }
     }
 
-    override fun onSelectedChanged(viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder?, actionState: Int) {
+    override fun onSelectedChanged(
+        viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder?,
+        actionState: Int
+    ) {
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
             if (viewHolder is ItemTouchHelperViewHolder) {
                 val itemViewHolder = viewHolder as ItemTouchHelperViewHolder?
@@ -71,7 +77,10 @@ class SimpleItemTouchHelperCallback(private val mAdapter: RecyclerListAdapter?) 
         super.onSelectedChanged(viewHolder, actionState)
     }
 
-    override fun clearView(recyclerView: androidx.recyclerview.widget.RecyclerView, viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder) {
+    override fun clearView(
+        recyclerView: androidx.recyclerview.widget.RecyclerView,
+        viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder
+    ) {
         super.clearView(recyclerView, viewHolder)
         viewHolder.itemView.alpha = ALPHA_FULL
 

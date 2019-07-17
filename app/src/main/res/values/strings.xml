@@ -2,7 +2,7 @@
     <string name="app_name">DragAndDrop</string>
     <string name="check_connection">Проверьте интернет соединение!</string>
     <string name="build_route">Построить маршрут</string>
-    <string name="my_location">Мое местоположение:</string>
+    <string name="my_location">Стартовая точка:</string>
 
 
     <string name="PREFERENCES_NAME">DataStorage</string>

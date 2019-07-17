@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_add_address.*
 import kotlinx.android.synthetic.main.activity_main.toolbar
 
 
-class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
+class ActivityEditAddress : AppCompatActivity(), View.OnClickListener {
 
     var mSharedPreferences: SharedPreferences? = null
     var uuidAddress: String? = null
@@ -42,15 +42,19 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
         edStaticAddressName = findViewById<TextView>(R.id.edAddressStaticName)
 
         btnUpdateInfo!!.setOnClickListener(this)
-        tv_address!!.setOnClickListener(this)
+        rl_address!!.setOnClickListener(this)
 
         mSharedPreferences = getSharedPreferences(getString(R.string.PREFERENCES_NAME), Context.MODE_PRIVATE)
         val uuidAdress = intent.getStringExtra("uuid")
         uuidAddress = uuidAdress
 
         val sharedPreferences =
-            applicationContext.getSharedPreferences(getString(R.string.SHARED_PREFERENCES_FILE_ADDRESS_LIST), MODE_PRIVATE)
-        val userInfoListJsonString = sharedPreferences.getString(getString(R.string.SHARED_PREFERENCES_KEY_USER_INFO_LIST), "")
+            applicationContext.getSharedPreferences(
+                getString(R.string.SHARED_PREFERENCES_FILE_ADDRESS_LIST),
+                MODE_PRIVATE
+            )
+        val userInfoListJsonString =
+            sharedPreferences.getString(getString(R.string.SHARED_PREFERENCES_KEY_USER_INFO_LIST), "")
         val gson = Gson()
         addressInfoArray = gson.fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java)
         addressInfoArray?.forEach { addressInfo ->
@@ -82,7 +86,7 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
 
-            R.id.tv_address -> {
+            R.id.rl_address -> {
                 val intent = PlacePicker.IntentBuilder()
                     .setLatLong(53.867323, 27.508925)
                     .showLatLong(true)
@@ -106,7 +110,10 @@ class ActivityAddAddress : AppCompatActivity(), View.OnClickListener {
                     }
                 }
 
-                val sharedPreferences = applicationContext.getSharedPreferences(getString(R.string.SHARED_PREFERENCES_FILE_ADDRESS_LIST), MODE_PRIVATE)
+                val sharedPreferences = applicationContext.getSharedPreferences(
+                    getString(R.string.SHARED_PREFERENCES_FILE_ADDRESS_LIST),
+                    MODE_PRIVATE
+                )
                 val editor = sharedPreferences.edit()
                 val gson = Gson()
                 val userInfoListJsonString = gson.toJson(addressInfoArray)

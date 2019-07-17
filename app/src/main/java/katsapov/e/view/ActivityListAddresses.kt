@@ -49,14 +49,14 @@ class ActivityListAddresses : AppCompatActivity() {
         val addressInfoArray = gson.fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java)
         addressInfoArray?.forEach { addressInfo -> dataInfoAddress.add(addressInfo) }
 
-        adapter = AddressAdapter(dataInfoAddress, applicationContext)
+        adapter = AddressAdapter(this, R.layout.item_address, R.id.tv_name, dataInfoAddress)
         val alert = AlertDialog.Builder(
             this
         )
 
         lv_adresses.adapter = adapter
         lv_adresses.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            val intent = Intent(this, ActivityAddAddress::class.java)
+            val intent = Intent(this, ActivityEditAddress::class.java)
             intent.putExtra("uuid", dataInfoAddress[position].uuid)
             startActivity(intent)
         }
@@ -128,7 +128,8 @@ class ActivityListAddresses : AppCompatActivity() {
         )
         val userInfoListJsonString =
             sharedPreferences.getString(getString(R.string.SHARED_PREFERENCES_KEY_USER_INFO_LIST), "")
-        val addressInfoArray = Gson().fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java) ?: emptyArray()
+        val addressInfoArray =
+            Gson().fromJson<Array<AddressInfo>>(userInfoListJsonString, Array<AddressInfo>::class.java) ?: emptyArray()
         dataInfoAddress.addAll(addressInfoArray)
         adapter?.notifyDataSetChanged()
     }
@@ -138,7 +139,7 @@ class ActivityListAddresses : AppCompatActivity() {
         try {
             val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
             val adress =
-                addressData!!.addressList!![0].thoroughfare.toString() + " , " + addressData.addressList!![0].featureName.toString()
+                addressData!!.addressList!![0].thoroughfare?.toString() + " , " + addressData.addressList!![0].featureName?.toString()
             val uuid = generateUuid()
             val addressInfo = AddressInfo(
                 uuid,
