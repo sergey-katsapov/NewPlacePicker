@@ -93,12 +93,14 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
             mBuilder.setPositiveButton("Выбрать") { dialog, which ->
                 val id = spinner?.selectedItemId?.toInt() ?: 0
-                selectedAddress = listObjAddress[id]
-                if (selectedAddress != null) {
-                    tv_tag.text = selectedAddress?.tag
-                    tv_adress.text = selectedAddress?.addressName
-                    tv_latitude.hint = selectedAddress?.latitude
-                    tv_longitude.hint = selectedAddress?.longitude
+                if (listObjAddress.isNotEmpty()) {
+                    selectedAddress = listObjAddress[id]
+                    if (selectedAddress != null) {
+                        tv_tag.text = selectedAddress?.tag
+                        tv_adress.text = selectedAddress?.addressName
+                        tv_latitude.hint = selectedAddress?.latitude
+                        tv_longitude.hint = selectedAddress?.longitude
+                    }
                 }
             }
             mBuilder.setCancelable(true)
