@@ -135,7 +135,10 @@ class ActivityMain : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
                 }
             }
 
-            mView.dialog_add_location.setOnClickListener { openAddressesActivity(this@ActivityMain) }
+            mView.dialog_add_location.setOnClickListener {
+                openAddressesActivity(this@ActivityMain)
+                dialog.dismiss()
+            }
         }
 
         setSupportActionBar(toolbar)
